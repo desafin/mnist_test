@@ -85,17 +85,25 @@ for image_file in image_files:
     img = cv2.resize(img, (400, 400))  # 이미지 크기 조정
     cv2.putText(img, f"Predicted Label: {predicted_label}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-    # 각 클래스별 확률을 표시합니다.
+
+    # 결과 이미지에 확률 정보 표시
     for i in range(probabilities.shape[1]):
         class_prob = probabilities[0, i].item()
-        cv2.putText(img, f"Class {i}: {class_prob:.4f}", (10, 70 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+        cv2.putText(img, f"Class {i}: {class_prob:.4f}", (10, 70 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255),
+                    2)
 
+    # 결과 이미지를 저장할 경로 및 파일 이름 생성
+    output_path = "output_images/"
+    output_filename = f"{output_path}{len(os.listdir(output_path))}.png"
+
+    # 이미지 저장
+    cv2.imwrite(output_filename, img)
+
+    # 결과 이미지를 화면에 표시
     cv2.imshow(f"Image: {image_file}", img)
 
-    # 'q' 키를 누를 때까지 대기합니다.
-    key = cv2.waitKey(100)
-    if key == ord('q'):
-        break
+    # 창을 열어놓고 키 입력을 대기
+    cv2.waitKey(0)
 
 # OpenCV 창을 닫습니다.
 cv2.destroyAllWindows()
